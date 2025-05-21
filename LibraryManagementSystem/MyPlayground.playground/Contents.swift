@@ -66,25 +66,25 @@ class Library {
     }
 }
 
-let library = Library()
-var book1 = Book()
-
-book1.title = "Harry Potter and the Chamber of Secrets"
-book1.author = "Kanye West"
-library.addBook(book1)
-
-if var id = book1.id, let title = book1.title {
-    do {
-        try library.borrowItem(by: id)
-        print("Successfully borrowed the book \(title)")
-        try library.borrowItem(by: id)
-    } catch LibraryError.alreadyBorrowed {
-        print("Error: \(title) is already borrowed")
-    } catch LibraryError.itemNotBorrowable {
-        print("Error: \(title) is not borrowable")
-    } catch LibraryError.itemNotFound {
-        print("Error: \(title) was not found")
-    } catch {
-        print("Error: Uncaught exception")
-    }
-}
+//let library = Library()
+//var book1 = Book()
+//
+//book1.title = "Harry Potter and the Chamber of Secrets"
+//book1.author = "Kanye West"
+//library.addBook(book1)
+//
+//if var id = book1.id, let title = book1.title {
+//    do {
+//        try library.borrowItem(by: id)
+//        print("Successfully borrowed the book \(title)")
+//        try library.borrowItem(by: id)
+//    } catch LibraryError.alreadyBorrowed {
+//        print("Error: \(title) is already borrowed")
+//    } catch LibraryError.itemNotBorrowable {
+//        print("Error: \(title) is not borrowable")
+//    } catch LibraryError.itemNotFound {
+//        print("Error: \(title) was not found")
+//    } catch {
+//        print("Error: Uncaught exception")
+//    }
+//}
