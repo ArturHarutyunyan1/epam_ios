@@ -1,17 +1,17 @@
-import UIKit
-import Foundation
-
-func solution(_ str1: String, _ str2: String) -> Int {
-    for (index, value) in str1.enumerated() {
-        var val = Array(str1)
-        val.remove(at: index)
-        
-        if String(val) == str2 {
-            return index
+public func isBalancedParentheses(input: String) -> Bool {
+    var stack: [Character] = []
+    for char in input {
+        if char != "(" && char != ")" {
+            continue
+        }
+        if char == "(" {
+            stack.insert(char, at: 0)
+        } else if char == ")" {
+            if stack.isEmpty {
+                return false
+            }
+            stack.remove(at: 0)
         }
     }
-    return -1
+    return stack.isEmpty
 }
-
-
-print(solution("haello", "hello"))
