@@ -4,31 +4,36 @@ struct School {
     enum SchoolRole {
         case student, teacher, administrator
     }
+    
     class Person {
-        var name: String
-        var role: SchoolRole
+        let name: String
+        let role: SchoolRole
         
         init(name: String, role: SchoolRole) {
             self.name = name
             self.role = role
         }
     }
-    private var personArray: [Person] = []
+    
+    private var people: [Person] = []
+    
     subscript(_ role: SchoolRole) -> [Person] {
-        return personArray.filter {$0.role == role}
+        return people.filter {$0.role == role}
     }
+    
     mutating func addPerson(_ name: String, _ role: SchoolRole) {
-        personArray.append(Person(name: name, role: role))
+        people.append(Person(name: name, role: role))
     }
-    static func countStudents(_ school: School) -> Int {
-        return school[.student].count
-    }
-    static func countTeachers(_ school: School) -> Int {
-        return school[.teacher].count
-    }
-    static func countAdministrators(_ school: School) -> Int {
-        return school[.administrator].count
-    }
+}
+
+func countStudents(_ school: School) -> Int {
+    return school[.student].count
+}
+func countTeachers(_ school: School) -> Int {
+    return school[.teacher].count
+}
+func countAdministrators(_ school: School) -> Int {
+    return school[.administrator].count
 }
 
 //var mySchool = School()
@@ -48,4 +53,4 @@ struct School {
 //mySchool.addPerson("Kanye West9", .teacher)
 //mySchool.addPerson("Kanye West10", .teacher)
 //
-//print(School.countAdministrators(mySchool))
+//print(countTeachers(mySchool))
