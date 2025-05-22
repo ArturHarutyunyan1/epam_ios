@@ -1,10 +1,5 @@
 import UIKit
 
-var discountedPrices: [Double] = []
-var booksPostedAfter2000: [String] = []
-var allGenres: Set<String> = []
-var totalCost: Int = 0
-
 let books = [
 ["title": "Swift Fundamentals", "author": "John Doe", "year": 2015, "price": 40, "genre": ["Programming", "Education"]],
 ["title": "The Great Gatsby", "author": "F. Scott Fitzgerald", "year": 1925, "price": 15, "genre": ["Classic", "Drama"]],
@@ -13,17 +8,19 @@ let books = [
 ["title": "To Kill a Mockingbird", "author": "Harper Lee", "year": 1960, "price": 20, "genre": ["Classic", "Drama"]]
 ]
 
-discountedPrices = books.compactMap {book in
+var totalCost: Int = 0
+
+let discountedPrices: [Double] = books.compactMap {book in
     guard let price = book["price"] as? Int else { return nil }
     return Double(price) * 0.9
 }
 
-booksPostedAfter2000 = books.filter { book in
+let booksPostedAfter2000: [String] = books.filter { book in
     guard let year = book["year"] as? Int else { return false }
     return year > 2000
 }.compactMap { $0["title"] as? String }
 
-allGenres = Set(books.compactMap { $0["genre"] as? [String] }.flatMap { $0 })
+var allGenres: Set<String> = Set(books.compactMap { $0["genre"] as? [String] }.flatMap { $0 })
 
 totalCost = books.reduce(0) { total, book in
     guard let price = book["price"] as? Int else { return total }
