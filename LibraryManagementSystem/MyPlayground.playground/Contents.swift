@@ -6,11 +6,11 @@ enum LibraryError : Error {
     case alreadyBorrowed
 }
 
-protocol Borrowable {
+protocol Borrowable : AnyObject {
     var borrowDate: Date? {get set}
     var returnDate: Date? {get set}
     var isBorrowed: Bool {get set}
-    mutating func checkIn()
+    func checkIn()
 }
 
 extension Borrowable {
@@ -20,7 +20,7 @@ extension Borrowable {
         }
         return false
     }
-    mutating func checkIn() {
+    func checkIn() {
         borrowDate = nil
         returnDate = nil
         isBorrowed = false
@@ -28,9 +28,9 @@ extension Borrowable {
 }
 
 class Item {
-    var id: String
-    var title: String
-    var author: String
+    let id: String
+    let title: String
+    let author: String
     
     init(id: String, title: String, author: String) {
         self.id = id
@@ -50,43 +50,26 @@ class Library {
     var items: [String : Item] = [:]
     
     func addBook(_ book: Book) {
-        let id = UUID().uuidString
-        book.id = id
-        items[id] = book
+        items[book.id] = book
     }
     func borrowItem(by id: String) throws -> Item {
-        guard let item = items[id] as? Book else {
-            throw LibraryError.itemNotFound
-        }
-        guard let borrowableItem = items[id] as? Borrowable else {
+        guard var borrowableItem = items[id] as? Borrowable else {
+            guard items[id] != nil else {
+                throw LibraryError.itemNotFound
+            }
             throw LibraryError.itemNotBorrowable
         }
-        if !item.isBorrowed {
-            item.borrowDate = Date()
-            item.returnDate = Calendar.current.date(byAdding: .day, value: 7, to: Date())
-            item.isBorrowed = true
-        } else {
+        guard let item = items[id] else {
+            throw LibraryError.itemNotFound
+        }
+        if borrowableItem.isBorrowed {
             throw LibraryError.alreadyBorrowed
         }
+        borrowableItem.borrowDate = Date()
+        borrowableItem.returnDate = Calendar.current.date(byAdding: .day, value: 7, to: Date())
+        borrowableItem.isBorrowed = true
+        
+        items[id] = borrowableItem as? Item
         return item
     }
 }
-
-//let library = Library()
-//let book1 = Book(id: "124", title: "Harry Potter and the Chamber of Secrets", author: "Kanye West")
-//
-//library.addBook(book1)
-//
-//do {
-//    try library.borrowItem(by: book1.id)
-//    print("Successfully borrowed the book \(book1.title)")
-//    try library.borrowItem(by: book1.id)
-//} catch LibraryError.alreadyBorrowed {
-//    print("Error: \(book1.title) is already borrowed")
-//} catch LibraryError.itemNotBorrowable {
-//    print("Error: \(book1.title) is not borrowable")
-//} catch LibraryError.itemNotFound {
-//    print("Error: \(book1.title) was not found")
-//} catch {
-//    print("Error: Uncaught exception")
-//}
