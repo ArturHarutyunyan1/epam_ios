@@ -7,22 +7,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "5E1DB8A9-14FF-4A2F-B241-9B8CBA3EC75F"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "AutolatoutPracticalTasks/Tasks/Task1ViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "4"
-            endingLineNumber = "4"
-            landmarkName = "unknown"
-            landmarkType = "0">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "E5AA9DF8-A6FF-4903-B584-122E3D337D49"
             shouldBeEnabled = "No"
             ignoreCount = "0"
@@ -34,78 +18,6 @@
             endingLineNumber = "13"
             landmarkName = "Task4ViewController"
             landmarkType = "3">
-            <Locations>
-               <Location
-                  uuid = "E5AA9DF8-A6FF-4903-B584-122E3D337D49 - 1ade38e5112b63ad"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "AutolatoutPracticalTasks.Task4ViewController.__allocating_init(nibName: Swift.Optional&lt;Swift.String&gt;, bundle: Swift.Optional&lt;__C.NSBundle&gt;) -&gt; AutolatoutPracticalTasks.Task4ViewController"
-                  moduleName = "AutolatoutPracticalTasks.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/arturhar/Desktop/epam_ios/UIKit/Part%202/Autolayout/AutolatoutPracticalTasks/AutolatoutPracticalTasks/Tasks/Task4ViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "0"
-                  endingLineNumber = "0">
-               </Location>
-               <Location
-                  uuid = "E5AA9DF8-A6FF-4903-B584-122E3D337D49 - 39a336293f703616"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "AutolatoutPracticalTasks.Task4ViewController.init(nibName: Swift.Optional&lt;Swift.String&gt;, bundle: Swift.Optional&lt;__C.NSBundle&gt;) -&gt; AutolatoutPracticalTasks.Task4ViewController"
-                  moduleName = "AutolatoutPracticalTasks.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/arturhar/Desktop/epam_ios/UIKit/Part%202/Autolayout/AutolatoutPracticalTasks/AutolatoutPracticalTasks/Tasks/Task4ViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "14"
-                  endingLineNumber = "14">
-               </Location>
-               <Location
-                  uuid = "E5AA9DF8-A6FF-4903-B584-122E3D337D49 - 31bedc9cc6b1c517"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "AutolatoutPracticalTasks.Task4ViewController.__allocating_init(coder: __C.NSCoder) -&gt; Swift.Optional&lt;AutolatoutPracticalTasks.Task4ViewController&gt;"
-                  moduleName = "AutolatoutPracticalTasks.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/arturhar/Desktop/epam_ios/UIKit/Part%202/Autolayout/AutolatoutPracticalTasks/AutolatoutPracticalTasks/Tasks/Task4ViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "0"
-                  endingLineNumber = "0">
-               </Location>
-               <Location
-                  uuid = "E5AA9DF8-A6FF-4903-B584-122E3D337D49 - efdfc9c919613008"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "AutolatoutPracticalTasks.Task4ViewController.init(coder: __C.NSCoder) -&gt; Swift.Optional&lt;AutolatoutPracticalTasks.Task4ViewController&gt;"
-                  moduleName = "AutolatoutPracticalTasks.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/arturhar/Desktop/epam_ios/UIKit/Part%202/Autolayout/AutolatoutPracticalTasks/AutolatoutPracticalTasks/Tasks/Task4ViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "14"
-                  endingLineNumber = "14">
-               </Location>
-               <Location
-                  uuid = "E5AA9DF8-A6FF-4903-B584-122E3D337D49 - e5c4ddc3808732f8"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "AutolatoutPracticalTasks.Task4ViewController.__deallocating_deinit"
-                  moduleName = "AutolatoutPracticalTasks.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/arturhar/Desktop/epam_ios/UIKit/Part%202/Autolayout/AutolatoutPracticalTasks/AutolatoutPracticalTasks/Tasks/Task4ViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "0"
-                  endingLineNumber = "0">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -122,36 +34,6 @@
             endingLineNumber = "14"
             landmarkName = "Task4ViewController"
             landmarkType = "3">
-            <Locations>
-               <Location
-                  uuid = "2830D105-3B8D-4720-9E48-11A1D71B1825 - 39a336293f703616"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "AutolatoutPracticalTasks.Task4ViewController.init(nibName: Swift.Optional&lt;Swift.String&gt;, bundle: Swift.Optional&lt;__C.NSBundle&gt;) -&gt; AutolatoutPracticalTasks.Task4ViewController"
-                  moduleName = "AutolatoutPracticalTasks.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/arturhar/Desktop/epam_ios/UIKit/Part%202/Autolayout/AutolatoutPracticalTasks/AutolatoutPracticalTasks/Tasks/Task4ViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "14"
-                  endingLineNumber = "14">
-               </Location>
-               <Location
-                  uuid = "2830D105-3B8D-4720-9E48-11A1D71B1825 - efdfc9c919613008"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "AutolatoutPracticalTasks.Task4ViewController.init(coder: __C.NSCoder) -&gt; Swift.Optional&lt;AutolatoutPracticalTasks.Task4ViewController&gt;"
-                  moduleName = "AutolatoutPracticalTasks.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/arturhar/Desktop/epam_ios/UIKit/Part%202/Autolayout/AutolatoutPracticalTasks/AutolatoutPracticalTasks/Tasks/Task4ViewController.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "14"
-                  endingLineNumber = "14">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

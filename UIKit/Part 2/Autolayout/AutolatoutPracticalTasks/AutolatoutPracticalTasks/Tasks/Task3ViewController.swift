@@ -28,16 +28,12 @@ final class Task3ViewController: UIViewController {
 
     private let contentView = UIView()
     private var bottomConstraint: NSLayoutConstraint!
-    private var keyboardHeight: CGFloat = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
         setupGestures()
         setupConstraints()
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     private func setupConstraints() {
@@ -77,7 +73,7 @@ final class Task3ViewController: UIViewController {
             logInButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
         
-        bottomConstraint = contentView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        bottomConstraint = contentView.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor)
         bottomConstraint.isActive = true
     }
     
@@ -115,23 +111,6 @@ final class Task3ViewController: UIViewController {
     private func setupButton() {
         logInButton.setTitle("Log In", for: .normal)
         logInButton.setTitleColor(.tintColor, for: .normal)
-    }
-    
-    @objc private func keyboardWillShow(_ notification: Notification) {
-        guard let frame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
-        keyboardHeight = frame.height
-        
-        bottomConstraint.constant = -keyboardHeight + view.safeAreaInsets.bottom
-        UIView.animate(withDuration: 0.3) {
-            self.view.layoutIfNeeded()
-        }
-    }
-    
-    @objc private func keyboardWillHide() {
-        bottomConstraint.constant = 0
-        UIView.animate(withDuration: 0.3) {
-            self.view.layoutIfNeeded()
-        }
     }
 }
 

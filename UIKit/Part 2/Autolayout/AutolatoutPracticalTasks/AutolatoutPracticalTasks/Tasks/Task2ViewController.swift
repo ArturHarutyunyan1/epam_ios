@@ -20,15 +20,27 @@ final class Task2ViewController: UIViewController {
         button.translatesAutoresizingMaskIntoConstraints = false
         label.translatesAutoresizingMaskIntoConstraints = false
         
-        button.setTitle("Button", for: .normal)
+        button.setTitle("This is a very long button title to test wrapping", for: .normal)
         button.backgroundColor = .systemBlue
         button.tintColor = .white
         button.layer.cornerRadius = 8
+        button.titleLabel?.numberOfLines = 0
+        button.titleLabel?.lineBreakMode = .byWordWrapping
+        button.titleLabel?.textAlignment = .center
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
+        button.titleLabel?.minimumScaleFactor = 0.5
+        button.setContentHuggingPriority(.required, for: .vertical)
+        button.setContentCompressionResistancePriority(.required, for: .vertical)
+
         
         label.text = "I am label"
         label.textColor = .systemRed
         label.backgroundColor = .systemMint
         label.textAlignment = .center
+        label.numberOfLines = 0
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 0.5
+        label.font = .systemFont(ofSize: 100)
         
         view.addSubview(button)
         view.addSubview(label)
@@ -36,13 +48,14 @@ final class Task2ViewController: UIViewController {
         NSLayoutConstraint.activate([
             label.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             label.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            label.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -10),
-            label.heightAnchor.constraint(equalToConstant: 30),
+            label.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            label.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             
-            button.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            button.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 20),
-            button.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -10),
-            button.heightAnchor.constraint(equalToConstant: 50),
+            button.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 10),
+            button.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            button.bottomAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
+
         ])
     }
 }

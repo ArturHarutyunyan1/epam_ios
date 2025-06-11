@@ -22,8 +22,6 @@ final class Task1ViewController: UIViewController {
             [
                 label.centerXAnchor.constraint(equalTo: view.centerXAnchor),
                 label.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-                label.widthAnchor.constraint(equalTo: view.widthAnchor),
-                label.heightAnchor.constraint(equalTo: view.heightAnchor)
             ]
         )
     }
