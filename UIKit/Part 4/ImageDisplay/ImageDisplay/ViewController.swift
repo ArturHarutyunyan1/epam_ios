@@ -10,6 +10,7 @@ import UIKit
 class ViewController: UIViewController, UIScrollViewDelegate {
     private let scrollView = UIScrollView()
     private let imageView = UIImageView()
+    private var hasSetZoom = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,7 +38,6 @@ class ViewController: UIViewController, UIScrollViewDelegate {
         scrollView.alwaysBounceVertical = true
         scrollView.showsVerticalScrollIndicator = true
         scrollView.bouncesZoom = true
-        scrollView.contentInsetAdjustmentBehavior = .never
         
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
@@ -60,27 +60,56 @@ class ViewController: UIViewController, UIScrollViewDelegate {
     private func imageLayoutView() {
         guard let image = imageView.image else { return }
         
-        let scaleFactor: CGFloat = scrollView.bounds.width / image.size.width
-        let newSize = CGSize(width: scrollView.bounds.width, height: scaleFactor * image.size.height)
+        let scrollViewSize = scrollView.bounds.size
+        let scaleFactor: CGFloat = (scrollViewSize.width / image.size.width) * 1.8
         
+        let newSize = CGSize(
+            width: image.size.width * scaleFactor,
+            height: image.size.height * scaleFactor
+        )
         imageView.frame = CGRect(origin: .zero, size: newSize)
         scrollView.contentSize = newSize
-        
-        scrollView.minimumZoomScale = scaleFactor
-        scrollView.maximumZoomScale = scaleFactor * 6
-        scrollView.zoomScale = scaleFactor
+
+        if !hasSetZoom {
+            scrollView.zoomScale = 1.0
+            hasSetZoom = true
+        }
+
         centerImage()
     }
-    
+
+
     private func centerImage() {
         let scrollViewSize = scrollView.bounds.size
         let imageViewSize = imageView.frame.size
         
-        let horizontalInset = imageViewSize.width < scrollViewSize.width ? (scrollViewSize.width - imageViewSize.width) / 2 : 0
-        let verticalInset = imageViewSize.height < scrollViewSize.height ? (scrollViewSize.height - imageViewSize.height) / 2 : 0
+        let horizontalInset = max(0, (scrollViewSize.width - imageViewSize.width) / 2)
+        let verticalInset = max(0, (scrollViewSize.height - imageViewSize.height) / 2)
         
-        scrollView.contentInset = UIEdgeInsets(top: verticalInset, left: horizontalInset, bottom: verticalInset, right: horizontalInset)
+        scrollView.contentInset = UIEdgeInsets(
+            top: verticalInset,
+            left: horizontalInset,
+            bottom: verticalInset,
+            right: horizontalInset
+        )
+        
+        var offset = scrollView.contentOffset
+        
+        if imageViewSize.width < scrollViewSize.width {
+            offset.x = -horizontalInset
+        } else {
+            offset.x = max(min(offset.x, scrollView.contentSize.width - scrollViewSize.width), 0)
+        }
+        
+        if imageViewSize.height < scrollViewSize.height {
+            offset.y = -verticalInset
+        } else {
+            offset.y = max(min(offset.y, scrollView.contentSize.height - scrollViewSize.height), 0)
+        }
+        
+        scrollView.contentOffset = offset
     }
+
     
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return imageView
@@ -89,6 +118,25 @@ class ViewController: UIViewController, UIScrollViewDelegate {
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
         centerImage()
     }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard scrollView.zoomScale == scrollView.minimumZoomScale else { return }
+        
+        scrollView.contentOffset.x = 0
+    }
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        guard scrollView.zoomScale == scrollView.minimumZoomScale else { return }
+        
+        scrollView.isDirectionalLockEnabled = true
+    }
+    
+    func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
+        DispatchQueue.main.async {
+            self.centerImage()
+        }
+    }
+
 }
 
 #Preview() {
