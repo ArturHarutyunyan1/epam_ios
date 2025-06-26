@@ -6,13 +6,8 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		F3E3E4DF2E0D387300F32B91 /* ProfileLayoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E3E4DE2E0D387300F32B91 /* ProfileLayoutViewController.swift */; };
-/* End PBXBuildFile section */
-
 /* Begin PBXFileReference section */
 		F3E3E4C62E0D384100F32B91 /* ProfileLayout.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ProfileLayout.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		F3E3E4DE2E0D387300F32B91 /* ProfileLayoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileLayoutViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -50,7 +45,6 @@
 		F3E3E4BD2E0D384000F32B91 = {
 			isa = PBXGroup;
 			children = (
-				F3E3E4DE2E0D387300F32B91 /* ProfileLayoutViewController.swift */,
 				F3E3E4C82E0D384100F32B91 /* ProfileLayout */,
 				F3E3E4C72E0D384100F32B91 /* Products */,
 			);
@@ -138,7 +132,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F3E3E4DF2E0D387300F32B91 /* ProfileLayoutViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
