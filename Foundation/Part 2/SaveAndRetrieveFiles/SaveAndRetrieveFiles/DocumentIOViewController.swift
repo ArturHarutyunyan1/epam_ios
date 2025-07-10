@@ -134,8 +134,16 @@ private extension DocumentIOViewController {
             return
         }
         do {
-            try data.write(to: userTextFile, options: .completeFileProtection)
-            self.showAlert("File was saved successfully")
+            if fileManager.fileExists(atPath: userTextFile.path) {
+                let fileHandle = try FileHandle(forWritingTo: userTextFile)
+                defer { fileHandle.closeFile() }
+                fileHandle.seekToEndOfFile()
+                fileHandle.write(data)
+                self.showAlert("Appended to file successfully")
+            } else {
+                try data.write(to: userTextFile, options: .completeFileProtection)
+                self.showAlert("File was created and written successfully")
+            }
         } catch {
             self.showAlert("Error while creating file: \(error.localizedDescription)")
         }
