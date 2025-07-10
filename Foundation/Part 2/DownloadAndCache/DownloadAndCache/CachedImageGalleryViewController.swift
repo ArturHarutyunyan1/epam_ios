@@ -15,12 +15,17 @@ struct Images : Codable {
     let urls: Urls
 }
 
+struct CachedImage {
+    let id: String
+    let url: URL
+}
+
 final class NetworkManager {
     let session = URLSession.shared
     let fileManager = FileManager.default
     let apiKey = ""
     
-    func fetchImages() async throws -> [URL] {
+    func fetchImages() async throws -> [CachedImage] {
         guard let url = URL(string: "https://api.unsplash.com/photos?client_id=\(apiKey)&per_page=30") else {
             throw URLError(.badURL)
         }
@@ -32,49 +37,57 @@ final class NetworkManager {
         }
         
         let imageObjs = try JSONDecoder().decode([Images].self, from: data)
-        let urls = imageObjs.compactMap { URL(string: $0.urls.small) }
-        return urls
+        let cachedImages = imageObjs.compactMap { image in
+            if let url = URL(string: image.urls.small) {
+                return CachedImage(id: image.id, url: url)
+            } else {
+                return nil
+            }
+        }
+        return cachedImages
     }
     
-    func cacheData(_ data: Data, _ url: URL) throws {
+    func cacheData(_ data: Data, _ image: CachedImage) throws {
         let tmpDirectoryURL = fileManager.temporaryDirectory
-        let fileName = url.lastPathComponent
+        let fileName = "\(image.id).\(image.url.pathExtension)"
         let fileURL = tmpDirectoryURL.appendingPathComponent(fileName)
         
         try data.write(to: fileURL)
     }
     
-    func removeCache() {
+    func removeCache(_ images: [CachedImage]) {
         let tmpDir = fileManager.temporaryDirectory
         
-        do {
-            let contents = try fileManager.contentsOfDirectory(at: tmpDir, includingPropertiesForKeys: nil)
-            for fileURL in contents {
-                if fileURL.pathExtension == "jpg" || fileURL.pathExtension == "jpeg" || fileURL.pathExtension == "png" {
+        for image in images {
+            let fileName = "\(image.id).\(image.url.pathExtension)"
+            let fileURL = tmpDir.appendingPathComponent(fileName)
+            
+            if fileManager.fileExists(atPath: fileURL.path) {
+                do {
                     try fileManager.removeItem(at: fileURL)
+                } catch {
+                    print("Failed to remove \(fileName): \(error.localizedDescription)")
                 }
             }
-        } catch {
-            print("Error: \(error.localizedDescription)")
         }
     }
     
-    func downloadImageData(from url: URL) async throws -> Data {
+    func downloadImageData(for image: CachedImage) async throws -> Data {
         let tmpDirectoryURL = fileManager.temporaryDirectory
-        let fileName = url.lastPathComponent
+        let fileName = "\(image.id).\(image.url.pathExtension)"
         let fileURL = tmpDirectoryURL.appendingPathComponent(fileName)
         
         if fileManager.fileExists(atPath: fileURL.path) {
             return try Data(contentsOf: fileURL)
         }
         
-        let (data, response) = try await session.data(from: url)
+        let (data, response) = try await session.data(from: image.url)
         
         guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
             throw URLError(.badServerResponse)
         }
         
-        try cacheData(data, url)
+        try cacheData(data, image)
         return data
     }
     
@@ -86,7 +99,7 @@ class CachedImageGalleryViewController: UIViewController {
     private lazy var collectionView = UICollectionView(frame: .zero, collectionViewLayout:
                                                         collectionViewLayout)
     private let resetButton = UIButton()
-    private var imageUrls: [URL] = []
+    private var imageUrls: [CachedImage] = []
     private let imageCache = NSCache<NSString, UIImage>()
     
     override func viewDidLoad() {
@@ -120,7 +133,7 @@ class CachedImageGalleryViewController: UIViewController {
         resetButton.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .semibold)
         resetButton.layer.cornerRadius = 10
         resetButton.addTarget(self, action: #selector(resetTapped), for: .touchUpInside)
-
+        
         view.addSubview(resetButton)
         
         NSLayoutConstraint.activate([
@@ -149,7 +162,7 @@ class CachedImageGalleryViewController: UIViewController {
     }
     
     private func clearCache() {
-        network.removeCache()
+        network.removeCache(imageUrls)
         showAlert(title: "Cache Cleared", message: "All cached image files have been deleted.")
         imageCache.removeAllObjects()
     }
@@ -175,27 +188,31 @@ extension CachedImageGalleryViewController : UICollectionViewDataSource, UIColle
             return UICollectionViewCell()
         }
         
-        let urlString = imageUrls[indexPath.item].absoluteString
+        let imageModel = imageUrls[indexPath.item]
         
-        cell.configure(with: urlString) { [weak self] urlString in
-            if let cachedImage = self?.imageCache.object(forKey: urlString as NSString) {
+        cell.configure(with: imageModel) { [weak self] image in
+            guard let self = self else { return nil }
+            
+            if let cachedImage = self.imageCache.object(forKey: image.id as NSString) {
                 return cachedImage
             }
-            guard let self = self, let url = URL(string: urlString) else { return nil }
             
             do {
-                let data = try await self.network.downloadImageData(from: url)
-                if let image = UIImage(data: data) {
-                    self.imageCache.setObject(image, forKey: urlString as NSString)
-                    return image
+                let data = try await self.network.downloadImageData(for: image)
+                if let imageObj = UIImage(data: data) {
+                    self.imageCache.setObject(imageObj, forKey: image.id as NSString)
+                    return imageObj
                 }
             } catch {
                 self.showAlert(title: "Error", message: error.localizedDescription)
             }
+            
             return nil
         }
+        
         return cell
     }
+    
 }
 
 extension CachedImageGalleryViewController : UICollectionViewDelegateFlowLayout {
@@ -211,7 +228,7 @@ final class ImageCell: UICollectionViewCell {
     static let reuseId = "ImageCell"
     private let imageView = UIImageView()
     private var loadTask: Task<Void, Never>?
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         imageView.contentMode = .scaleAspectFill
@@ -226,16 +243,16 @@ final class ImageCell: UICollectionViewCell {
             imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
-
-    func configure(with urlString: String, loader: @escaping (String) async -> UIImage?) {
+    
+    func configure(with image: CachedImage, loader: @escaping (CachedImage) async -> UIImage?) {
         loadTask?.cancel()
         imageView.image = nil
         
         loadTask = Task {
-            let image = await loader(urlString)
+            let img = await loader(image)
             if !Task.isCancelled {
                 await MainActor.run {
-                    self.imageView.image = image
+                    self.imageView.image = img
                 }
             }
         }
@@ -244,7 +261,7 @@ final class ImageCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     override func prepareForReuse() {
         super.prepareForReuse()
         imageView.image = nil
