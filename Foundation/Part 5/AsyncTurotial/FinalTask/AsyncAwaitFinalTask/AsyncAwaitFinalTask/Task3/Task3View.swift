@@ -40,27 +40,39 @@ struct Task3View: View {
                     Text("Start monitoring")
                 }
             }
-
+            
         }
     }
 }
 
 class Task3API {
+    private var streamTask: Task<Void, Never>?
     enum SignalStrenght: String {
         case weak, strong, excellent, unknown
     }
     
     func signalStrength() -> AsyncStream<SignalStrenght> {
         return AsyncStream { continuation in
-            Task {
-                try? await Task.sleep(for: .seconds(1))
-                continuation.yield(with: .success([SignalStrenght.weak, .strong, .excellent].randomElement() ?? .unknown))
+            streamTask = Task {
+                await withTaskCancellationHandler(
+                    operation: {
+                        while !Task.isCancelled {
+                            try? await Task.sleep(for: .seconds(1))
+                            if Task.isCancelled { break }
+                            
+                            continuation.yield(with: .success([SignalStrenght.weak, .strong, .excellent].randomElement() ?? .unknown))
+                        }
+                    }, onCancel: {
+                        continuation.finish()
+                    }
+                )
             }
         }
     }
     
     func cancel() {
-        // ????
+        streamTask?.cancel()
+        streamTask = nil
     }
 }
 
