@@ -7,6 +7,11 @@
 
 import SwiftUI
 
+enum TaskResult {
+    case user(Task2API.User)
+    case products([Task2API.Product])
+}
+
 struct Task2View: View {
     let task2API: Task2API = .init()
 
@@ -28,8 +33,21 @@ struct Task2View: View {
         }.task {
             do {
                 let startDate = Date.now
-                user = try await task2API.getUser()
-                products = try await task2API.getProducts()
+                
+                try await withThrowingTaskGroup(of: TaskResult.self) { group in
+                    group.addTask { .user( try await task2API.getUser() ) }
+                    group.addTask { .products( try await task2API.getProducts() ) }
+                    
+                    for try await result in group {
+                        switch result {
+                        case .user(let user):
+                            self.user = user
+                        case .products(let products):
+                            self.products = products
+                        }
+                    }
+                }
+                
                 let endDate = Date.now
 
                 duration = DateInterval(start: startDate, end: endDate).duration
