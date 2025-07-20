@@ -20,8 +20,10 @@ struct Task4View: View {
             }
             Button {
                 if finished {
-                    api.ballance = 1000
-                    finished = false
+                    Task {
+                        await api.resetBalance()
+                        finished = false
+                    }
                 } else {
                     Task {
                         ballance = await api.startUpdate()
@@ -43,18 +45,26 @@ struct Task4View: View {
     Task4View()
 }
 
-class Task4ViewAPI: @unchecked Sendable {
+actor Task4ViewAPI: @unchecked Sendable {
     var ballance: Int = 1000
     
     func startUpdate() async -> Int {
         await withTaskGroup(of: Void.self) { group in
             for _ in 0...999 {
-                group.addTask { [weak self] in
-                    self?.ballance -= 1
+                group.addTask {
+                    await self.decrement()
                 }
             }
         }
         
         return ballance
+    }
+    
+    func decrement() async {
+        ballance -= 1
+    }
+    
+    func resetBalance() async {
+        ballance = 1000
     }
 }
