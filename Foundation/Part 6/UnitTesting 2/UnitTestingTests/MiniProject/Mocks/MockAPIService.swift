@@ -9,12 +9,14 @@ final class MockAPIService: APIServiceProtocol {
     var fetchUsersResult: Result<[User], APIError>?
     
     private(set) var fetchUsersCallsCount = 0
+    private(set) var lastFetchedURLString: String?
 
     func fetchUsers(
         urlString: String,
         completion: @escaping (Result<[User], APIError>) -> Void
     ) {
         fetchUsersCallsCount += 1
+        lastFetchedURLString = urlString
         if let fetchUsersResult {
             completion(fetchUsersResult)
         } else {
