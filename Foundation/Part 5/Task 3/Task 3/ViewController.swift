@@ -12,7 +12,8 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        startOperations()
+//        startOperations()
+        startOperationsWithoutDependency()
     }
     
     private func startOperations() {
@@ -32,6 +33,24 @@ class ViewController: UIViewController {
             print("Operation \"A\" finished")
         }
         op1.addDependency(op2)
+        operationQueue.addOperations([op1, op2], waitUntilFinished: false)
+    }
+    
+    private func startOperationsWithoutDependency() {
+        let op1 = BlockOperation {
+            print("Operation \"B\" started")
+            for _ in 0..<1000000 {
+                // do nothing
+            }
+            print("Operation \"B\" finished")
+        }
+        let op2 = BlockOperation {
+            print("Operation \"A\" started")
+            for _ in 0..<1000000 {
+                // do nothing
+            }
+            print("Operation \"A\" finished")
+        }
         operationQueue.addOperations([op1, op2], waitUntilFinished: false)
     }
 }
