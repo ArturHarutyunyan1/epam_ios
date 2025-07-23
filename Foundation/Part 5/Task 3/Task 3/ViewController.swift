@@ -46,6 +46,7 @@ class ViewController: UIViewController {
         }
         let op2 = BlockOperation {
             print("Operation \"A\" started")
+            op1.cancel()
             for _ in 0..<1000000 {
                 // do nothing
             }
