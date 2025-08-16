@@ -19,11 +19,3 @@ struct ContentView: View {
         .padding()
     }
 }
-
-
-
-#Preview {
-    @StateObject var counter = Counter()
-    ContentView()
-        .environmentObject(counter)
-}
