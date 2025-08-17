@@ -6,13 +6,8 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		F31776562E5224CE00EAEA63 /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31776552E5224CE00EAEA63 /* SwiftUIView.swift */; };
-/* End PBXBuildFile section */
-
 /* Begin PBXFileReference section */
 		F317763D2E52249E00EAEA63 /* Task 3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Task 3.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		F31776552E5224CE00EAEA63 /* SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -50,7 +45,6 @@
 		F31776342E52249E00EAEA63 = {
 			isa = PBXGroup;
 			children = (
-				F31776552E5224CE00EAEA63 /* SwiftUIView.swift */,
 				F317763F2E52249E00EAEA63 /* Task 3 */,
 				F317763E2E52249E00EAEA63 /* Products */,
 			);
@@ -138,7 +132,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F31776562E5224CE00EAEA63 /* SwiftUIView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
